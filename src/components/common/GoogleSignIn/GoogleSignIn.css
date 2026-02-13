@@ -1,0 +1,41 @@
+.google-signin-container {
+  margin-top: 20px;
+}
+
+.divider {
+  display: flex;
+  align-items: center;
+  margin: 24px 0;
+  color: #718096;
+}
+
+.divider::before,
+.divider::after {
+  content: '';
+  flex: 1;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.divider span {
+  padding: 0 16px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #a0aec0;
+}
+
+#google-signin-button {
+  display: flex;
+  justify-content: center;
+  min-height: 44px;
+  transition: opacity 0.2s;
+}
+
+#google-signin-button.loading {
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+/* Custom styling for Google button container */
+#google-signin-button > div {
+  width: 100% !important;
+}
