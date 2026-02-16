@@ -1,0 +1,78 @@
+.filter-select {
+  padding: 8px 16px;
+  border-radius: 8px;
+  border: 1px solid #d1d5db;
+  font-size: 14px;
+  min-width: 150px;
+  background-color: white;
+  cursor: pointer;
+}
+
+.filter-select:disabled {
+  background-color: #f3f4f6;
+  cursor: not-allowed;
+}
+
+.content-type-badge {
+  padding: 4px 12px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  background-color: #dbeafe;
+  color: #1e40af;
+}
+
+.url-cell {
+  max-width: 200px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.url-cell a {
+  color: #3b82f6;
+  text-decoration: none;
+}
+
+.url-cell a:hover {
+  text-decoration: underline;
+}
+
+.upload-modal {
+  max-width: 600px;
+}
+
+.file-input {
+  width: 100%;
+  padding: 10px;
+  border: 2px dashed #d1d5db;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.file-input:hover {
+  border-color: #3b82f6;
+  background-color: #f0f9ff;
+}
+
+.file-list {
+  margin-top: 12px;
+  padding: 12px;
+  background-color: #f9fafb;
+  border-radius: 8px;
+}
+
+.file-item {
+  padding: 8px;
+  background-color: white;
+  border-radius: 6px;
+  margin-bottom: 8px;
+  font-size: 13px;
+  color: #374151;
+}
+
+.file-item:last-child {
+  margin-bottom: 0;
+}

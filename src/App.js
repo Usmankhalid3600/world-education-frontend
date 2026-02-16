@@ -2,18 +2,39 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import Login from './components/auth/Login/Login';
 import SignUp from './components/auth/SignUp/SignUp';
-import Dashboard from './components/auth/Dashboard/Dashboard';
-import { isAuthenticated } from './utils/auth';
+import StudentDashboard from './components/auth/Dashboard/StudentDashboard';
+import AdminDashboard from './components/admin/AdminDashboard/AdminDashboard';
+import { isAuthenticated, getUser } from './utils/auth';
 import './App.css';
 
 // Protected Route Component
-const ProtectedRoute = ({ children }) => {
-  return isAuthenticated() ? children : <Navigate to="/login" replace />;
+const ProtectedRoute = ({ children, adminOnly = false }) => {
+  if (!isAuthenticated()) {
+    return <Navigate to="/login" replace />;
+  }
+  
+  if (adminOnly) {
+    const user = getUser();
+    if (!user || user.userCategory !== 'ADMIN') {
+      return <Navigate to="/dashboard" replace />;
+    }
+  }
+  
+  return children;
 };
 
-// Public Route Component (redirect to dashboard if already logged in)
+// Public Route Component (redirect to appropriate dashboard if already logged in)
 const PublicRoute = ({ children }) => {
-  return !isAuthenticated() ? children : <Navigate to="/dashboard" replace />;
+  if (!isAuthenticated()) {
+    return children;
+  }
+  
+  const user = getUser();
+  if (user && user.userCategory === 'ADMIN') {
+    return <Navigate to="/admin" replace />;
+  }
+  
+  return <Navigate to="/dashboard" replace />;
 };
 
 function App() {
@@ -44,7 +65,16 @@ function App() {
             path="/dashboard" 
             element={
               <ProtectedRoute>
-                <Dashboard />
+                <StudentDashboard />
+              </ProtectedRoute>
+            } 
+          />
+          
+          <Route 
+            path="/admin" 
+            element={
+              <ProtectedRoute adminOnly={true}>
+                <AdminDashboard />
               </ProtectedRoute>
             } 
           />

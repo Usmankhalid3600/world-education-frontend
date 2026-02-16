@@ -1,0 +1,171 @@
+.topic-card {
+  background: white;
+  border-radius: 10px;
+  padding: 16px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  cursor: pointer;
+  border: 2px solid transparent;
+}
+
+.topic-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.topic-card.opted {
+  border-color: #48bb78;
+  background: linear-gradient(to bottom right, #ffffff, #f0fff4);
+}
+
+.topic-card.unopted {
+  border-color: #e2e8f0;
+}
+
+.topic-card.unopted:hover {
+  border-color: #667eea;
+}
+
+.topic-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 12px;
+  gap: 8px;
+}
+
+.topic-card-header h4 {
+  font-size: 16px;
+  font-weight: 600;
+  color: #2d3748;
+  margin: 0;
+  flex: 1;
+  line-height: 1.4;
+}
+
+.badge {
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 11px;
+  font-weight: 600;
+  white-space: nowrap;
+  text-transform: uppercase;
+}
+
+.opted-badge {
+  background: #48bb78;
+  color: white;
+}
+
+.price-badge {
+  background: #667eea;
+  color: white;
+  font-size: 13px;
+  padding: 5px 12px;
+  text-transform: none;
+}
+
+.topic-card-body {
+  margin-bottom: 12px;
+}
+
+.publish-date {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  color: #718096;
+  margin: 0 0 8px 0;
+}
+
+.publish-date svg {
+  flex-shrink: 0;
+}
+
+.subscription-info {
+  background: #f7fafc;
+  padding: 10px;
+  border-radius: 6px;
+  margin-top: 8px;
+}
+
+.subscription-info p {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  color: #4a5568;
+  margin: 4px 0;
+}
+
+.subscription-info svg {
+  flex-shrink: 0;
+  color: #667eea;
+}
+
+.duration-info {
+  font-weight: 600;
+}
+
+.free-trial {
+  color: #48bb78;
+  font-weight: 600;
+}
+
+.topic-card-footer {
+  margin-top: 12px;
+}
+
+.view-content-btn {
+  width: 100%;
+  padding: 10px 12px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+.view-content-btn:hover {
+  opacity: 0.9;
+  transform: scale(1.02);
+}
+
+.view-content-btn svg {
+  width: 16px;
+  height: 16px;
+}
+
+.topic-card.unopted .view-content-btn {
+  background: linear-gradient(135deg, #3182ce 0%, #2c5282 100%);
+}
+
+@media (max-width: 768px) {
+  .topic-card {
+    padding: 14px;
+  }
+
+  .topic-card-header h4 {
+    font-size: 15px;
+  }
+
+  .publish-date {
+    font-size: 12px;
+  }
+
+  .subscription-info p {
+    font-size: 11px;
+  }
+
+  .price-badge {
+    font-size: 12px;
+    padding: 4px 10px;
+  }
+}

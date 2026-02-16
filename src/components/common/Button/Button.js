@@ -17,14 +17,8 @@ const Button = ({
       disabled={disabled || loading}
       className={`btn btn-${variant} ${fullWidth ? 'btn-full-width' : ''} ${loading ? 'btn-loading' : ''}`}
     >
-      {loading ? (
-        <>
-          <span className="spinner"></span>
-          Loading...
-        </>
-      ) : (
-        children
-      )}
+      {loading && <span className="spinner"></span>}
+      <span className={loading ? 'btn-text' : ''}>{children}</span>
     </button>
   );
 };

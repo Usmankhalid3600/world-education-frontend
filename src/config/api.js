@@ -8,6 +8,9 @@ export const API_ENDPOINTS = {
   VERIFY: `${API_BASE_URL}/api/auth/verify`,
   GOOGLE_AUTH: `${API_BASE_URL}/api/auth/google`,
   
+  // Class endpoints
+  CLASSES: `${API_BASE_URL}/api/classes`,
+  
   // Subject endpoints
   SUBJECTS: (classId) => `${API_BASE_URL}/api/subjects/class/${classId}`,
   

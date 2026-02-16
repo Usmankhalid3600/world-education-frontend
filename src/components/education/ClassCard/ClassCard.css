@@ -1,0 +1,73 @@
+.class-card {
+  background: white;
+  border-radius: 16px;
+  padding: 30px 24px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: 2px solid transparent;
+}
+
+.class-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+  border-color: #667eea;
+}
+
+.class-card-icon {
+  width: 80px;
+  height: 80px;
+  margin: 0 auto 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 50%;
+  color: white;
+}
+
+.class-card h3 {
+  font-size: 22px;
+  font-weight: 700;
+  color: #2d3748;
+  margin: 0 0 8px 0;
+}
+
+.class-number {
+  font-size: 14px;
+  color: #718096;
+  margin: 0 0 20px 0;
+}
+
+.select-class-btn {
+  width: 100%;
+  padding: 12px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity 0.3s ease;
+}
+
+.select-class-btn:hover {
+  opacity: 0.9;
+}
+
+@media (max-width: 768px) {
+  .class-card {
+    padding: 24px 20px;
+  }
+
+  .class-card-icon {
+    width: 64px;
+    height: 64px;
+  }
+
+  .class-card h3 {
+    font-size: 20px;
+  }
+}

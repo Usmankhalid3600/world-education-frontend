@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import Input from '../../common/Input/Input';
 import Button from '../../common/Button/Button';
@@ -30,6 +30,17 @@ const SignUp = () => {
   const [errors, setErrors] = useState({});
   const [alert, setAlert] = useState({ type: '', message: '' });
   const [loading, setLoading] = useState(false);
+  const [shouldRedirect, setShouldRedirect] = useState(false);
+
+  // Handle redirect after successful verification
+  useEffect(() => {
+    if (shouldRedirect) {
+      const timer = setTimeout(() => {
+        navigate('/dashboard', { replace: true });
+      }, 1500);
+      return () => clearTimeout(timer);
+    }
+  }, [shouldRedirect, navigate]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -134,11 +145,7 @@ const SignUp = () => {
         setUser(userData);
         
         setAlert({ type: 'success', message: 'Account created successfully! Redirecting...' });
-        
-        // Redirect to dashboard
-        setTimeout(() => {
-          navigate('/dashboard');
-        }, 1500);
+        setShouldRedirect(true);
       }
     } catch (error) {
       const errorMessage = error.response?.data?.message || 

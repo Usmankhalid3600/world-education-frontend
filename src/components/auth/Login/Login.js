@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { useNavigate, Link, useLocation } from 'react-router-dom';
 import Input from '../../common/Input/Input';
 import Button from '../../common/Button/Button';
 import Alert from '../../common/Alert/Alert';
@@ -10,6 +10,7 @@ import './Login.css';
 
 const Login = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const [formData, setFormData] = useState({
     userId: '',
     password: '',
@@ -19,6 +20,19 @@ const Login = () => {
   const [errors, setErrors] = useState({});
   const [alert, setAlert] = useState({ type: '', message: '' });
   const [loading, setLoading] = useState(false);
+  const [shouldRedirect, setShouldRedirect] = useState(false);
+
+  // Handle redirect after successful login
+  useEffect(() => {
+    if (shouldRedirect) {
+      const timer = setTimeout(() => {
+        const user = JSON.parse(localStorage.getItem('user'));
+        const redirectPath = user && user.userCategory === 'ADMIN' ? '/admin' : '/dashboard';
+        navigate(redirectPath, { replace: true });
+      }, 1000);
+      return () => clearTimeout(timer);
+    }
+  }, [shouldRedirect, navigate]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -68,11 +82,7 @@ const Login = () => {
         setUser(userData);
         
         setAlert({ type: 'success', message: 'Login successful! Redirecting...' });
-        
-        // Redirect to dashboard after short delay
-        setTimeout(() => {
-          navigate('/dashboard');
-        }, 1000);
+        setShouldRedirect(true);
       }
     } catch (error) {
       const errorMessage = error.response?.data?.message || 

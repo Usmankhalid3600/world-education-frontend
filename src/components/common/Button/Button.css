@@ -54,7 +54,10 @@
 
 .btn-loading {
   position: relative;
-  color: transparent;
+}
+
+.btn-loading .btn-text {
+  visibility: hidden;
 }
 
 .spinner {
@@ -72,6 +75,6 @@
 
 @keyframes spin {
   to {
-    transform: translate(-50%, -50%) rotate(360deg);
+    transform: rotate(360deg);
   }
 }
