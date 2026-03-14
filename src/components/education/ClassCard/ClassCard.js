@@ -11,6 +11,9 @@ const ClassCard = ({ classItem, onClick }) => {
       </div>
       <h3>{classItem.className}</h3>
       <p className="class-number">Grade {classItem.classNumber}</p>
+      {classItem.description && (
+        <p className="class-description">{classItem.description}</p>
+      )}
       <button className="select-class-btn">Select Class</button>
     </div>
   );

@@ -25,6 +25,24 @@ class AuthService {
     const response = await apiClient.post(API_ENDPOINTS.GOOGLE_AUTH, googleData);
     return response.data;
   }
+
+  // Forgot Password - Step 1: Send reset code
+  async forgotPassword(userId) {
+    const response = await apiClient.post(API_ENDPOINTS.FORGOT_PASSWORD, { userId });
+    return response.data;
+  }
+
+  // Forgot Password - Step 2: Verify reset code
+  async verifyResetCode(userId, code) {
+    const response = await apiClient.post(API_ENDPOINTS.VERIFY_RESET_CODE, { userId, code });
+    return response.data;
+  }
+
+  // Forgot Password - Step 3: Set new password
+  async resetPassword(userId, code, newPassword) {
+    const response = await apiClient.post(API_ENDPOINTS.RESET_PASSWORD, { userId, code, newPassword });
+    return response.data;
+  }
 }
 
 const authServiceInstance = new AuthService();

@@ -60,21 +60,19 @@
   visibility: hidden;
 }
 
-.spinner {
+.btn-spinner {
   width: 16px;
   height: 16px;
-  border: 2px solid rgba(255, 255, 255, 0.3);
+  border: 2.5px solid rgba(255, 255, 255, 0.35);
   border-top-color: white;
   border-radius: 50%;
-  animation: spin 0.8s linear infinite;
+  animation: btn-spin 0.75s linear infinite;
   position: absolute;
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
 }
 
-@keyframes spin {
-  to {
-    transform: rotate(360deg);
-  }
+@keyframes btn-spin {
+  to { transform: translate(-50%, -50%) rotate(360deg); }
 }

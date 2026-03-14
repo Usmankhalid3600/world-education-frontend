@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { getClasses, createClass, updateClass, deleteClass } from '../../../services/adminService';
 import Button from '../../common/Button/Button';
+import Loader from '../../common/Loader/Loader';
 import './ClassManagement.css';
 
 const ClassManagement = () => {
@@ -11,7 +12,8 @@ const ClassManagement = () => {
   const [formData, setFormData] = useState({
     className: '',
     classNumber: '',
-    isActive: true
+    isActive: true,
+    description: ''
   });
 
   useEffect(() => {
@@ -69,7 +71,8 @@ const ClassManagement = () => {
     setFormData({
       className: classItem.className,
       classNumber: classItem.classNumber,
-      isActive: classItem.isActive
+      isActive: classItem.isActive,
+      description: classItem.description || ''
     });
     setShowModal(true);
   };
@@ -79,7 +82,8 @@ const ClassManagement = () => {
     setFormData({
       className: '',
       classNumber: '',
-      isActive: true
+      isActive: true,
+      description: ''
     });
   };
 
@@ -89,7 +93,7 @@ const ClassManagement = () => {
   };
 
   if (loading) {
-    return <div className="loading-spinner">Loading classes...</div>;
+    return <Loader text="Loading classes…" />;
   }
 
   return (
@@ -178,6 +182,17 @@ const ClassManagement = () => {
                   onChange={(e) => setFormData({ ...formData, classNumber: e.target.value })}
                   required
                   placeholder="e.g., 1"
+                />
+              </div>
+
+              <div className="form-group">
+                <label>Description</label>
+                <textarea
+                  value={formData.description}
+                  onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+                  placeholder="Optional description for this class"
+                  rows={3}
+                  style={{ width: '100%', padding: '10px 14px', border: '1px solid #d1d5db', borderRadius: '8px', fontSize: '14px', resize: 'vertical' }}
                 />
               </div>
 

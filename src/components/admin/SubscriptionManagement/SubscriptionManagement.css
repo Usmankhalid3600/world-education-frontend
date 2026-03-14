@@ -122,6 +122,203 @@
   }
 }
 
+/* ── Modal wide variant ─────────────────────────────────────────────────────── */
+.modal-wide {
+  width: 680px;
+  max-width: 95vw;
+}
+
+/* ── Target column in table ─────────────────────────────────────────────────── */
+.target-path-cell {
+  font-size: 13px;
+  color: #374151;
+  max-width: 240px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ── Target selection section ───────────────────────────────────────────────── */
+.target-selection-section {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  padding: 16px 20px;
+  margin-bottom: 20px;
+}
+
+.section-label {
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #6b7280;
+  margin-bottom: 12px;
+}
+
+/* Target type radio pills */
+.target-type-row {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 18px;
+  flex-wrap: wrap;
+}
+
+.type-radio {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 16px;
+  border: 2px solid #e5e7eb;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  color: #6b7280;
+  background: white;
+  transition: all 0.2s ease;
+  user-select: none;
+}
+
+.type-radio input[type="radio"] {
+  display: none;
+}
+
+.type-radio:hover {
+  border-color: #3b82f6;
+  color: #3b82f6;
+}
+
+.type-radio.selected {
+  border-color: #3b82f6;
+  background: #eff6ff;
+  color: #1d4ed8;
+}
+
+.type-radio-icon {
+  font-size: 16px;
+}
+
+/* Cascading steps row */
+.selection-steps {
+  display: flex;
+  align-items: flex-start;
+  gap: 0;
+  flex-wrap: wrap;
+}
+
+.selection-step {
+  flex: 1;
+  min-width: 160px;
+}
+
+.step-header {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  margin-bottom: 6px;
+}
+
+.step-number {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  font-size: 12px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: all 0.2s ease;
+}
+
+.step-number.active {
+  background: #3b82f6;
+  color: white;
+}
+
+.step-number.done {
+  background: #10b981;
+  color: white;
+}
+
+.step-number.waiting {
+  background: #e5e7eb;
+  color: #9ca3af;
+}
+
+.step-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: #374151;
+}
+
+.selection-step select {
+  width: 100%;
+  padding: 9px 12px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  font-size: 13px;
+  background: white;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-sizing: border-box;
+}
+
+.selection-step select:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.selection-step select:disabled {
+  background: #f3f4f6;
+  color: #9ca3af;
+  cursor: not-allowed;
+}
+
+.step-connector {
+  font-size: 22px;
+  color: #9ca3af;
+  padding: 28px 8px 0;
+  flex-shrink: 0;
+  align-self: flex-start;
+}
+
+/* Selection path breadcrumb */
+.selection-path {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-top: 14px;
+  padding: 10px 14px;
+  background: #eff6ff;
+  border: 1px solid #bfdbfe;
+  border-radius: 8px;
+  font-size: 13px;
+}
+
+.path-icon {
+  margin-right: 4px;
+  font-size: 14px;
+}
+
+.path-part {
+  color: #374151;
+  font-weight: 500;
+}
+
+.path-leaf {
+  color: #1d4ed8;
+  font-weight: 700;
+}
+
+.path-separator {
+  color: #9ca3af;
+  font-weight: 400;
+}
+
 /* Responsive Design */
 @media (max-width: 768px) {
   .form-row {
@@ -140,5 +337,37 @@
   .data-table th,
   .data-table td {
     padding: 12px 8px;
+  }
+
+  /* Stack cascading steps vertically on mobile */
+  .selection-steps {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .selection-step {
+    min-width: unset;
+    width: 100%;
+  }
+
+  .step-connector {
+    padding: 0;
+    font-size: 18px;
+    align-self: auto;
+    transform: rotate(90deg);
+    text-align: center;
+  }
+
+  .target-type-row {
+    gap: 8px;
+  }
+
+  .type-radio {
+    padding: 7px 12px;
+    font-size: 13px;
+  }
+
+  .modal-wide {
+    width: 100%;
   }
 }

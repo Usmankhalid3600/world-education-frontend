@@ -80,6 +80,7 @@
 }
 
 .btn-edit,
+.btn-view,
 .btn-delete {
   padding: 6px 14px;
   border: none;
@@ -88,6 +89,16 @@
   font-weight: 500;
   cursor: pointer;
   transition: all 0.3s ease;
+}
+
+.btn-view {
+  background-color: #d1fae5;
+  color: #065f46;
+}
+
+.btn-view:hover {
+  background-color: #10b981;
+  color: white;
 }
 
 .btn-edit {
@@ -262,9 +273,4 @@
   border-color: #9ca3af;
 }
 
-.loading-spinner {
-  text-align: center;
-  padding: 40px;
-  font-size: 16px;
-  color: #6b7280;
-}
+/* Loading — handled by <Loader> component */

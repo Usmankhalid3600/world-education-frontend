@@ -5,7 +5,7 @@ import Button from '../../common/Button/Button';
 import Alert from '../../common/Alert/Alert';
 import GoogleSignIn from '../../common/GoogleSignIn/GoogleSignIn';
 import authService from '../../../services/authService';
-import { setAuthToken, setUser } from '../../../utils/auth';
+import { setAuthToken, setUser, setSessionId } from '../../../utils/auth';
 import './Login.css';
 
 const Login = () => {
@@ -77,9 +77,12 @@ const Login = () => {
       if (response.success) {
         const userData = response.data;
         
-        // Save token and user data
+        // Save token, session, and user data
         setAuthToken(userData.token);
         setUser(userData);
+        if (userData.sessionId) {
+          setSessionId(userData.sessionId);
+        }
         
         setAlert({ type: 'success', message: 'Login successful! Redirecting...' });
         setShouldRedirect(true);
@@ -132,9 +135,15 @@ const Login = () => {
             error={errors.password}
           />
 
-          <Button 
-            type="submit" 
-            fullWidth 
+          <div className="forgot-password-row">
+            <Link to="/forgot-password" className="link forgot-password-link">
+              Forgot Password?
+            </Link>
+          </div>
+
+          <Button
+            type="submit"
+            fullWidth
             loading={loading}
           >
             Sign In

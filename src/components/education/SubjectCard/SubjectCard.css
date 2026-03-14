@@ -25,6 +25,15 @@
   border-color: #667eea;
 }
 
+.subject-card.subscription-inactive {
+  border-color: #fed7aa;
+  background: #fffaf5;
+}
+
+.subject-card.subscription-inactive:hover {
+  border-color: #ed8936;
+}
+
 .subject-card-header {
   display: flex;
   justify-content: space-between;
@@ -54,6 +63,18 @@
 .available-badge {
   background: #e6f2ff;
   color: #2c5282;
+}
+
+.inactive-badge {
+  background: #feebc8;
+  color: #7b341e;
+}
+
+.subject-description {
+  font-size: 13px;
+  color: #718096;
+  margin: 0 0 12px 0;
+  line-height: 1.5;
 }
 
 .subject-card-footer {

@@ -26,9 +26,19 @@ apiClient.interceptors.response.use(
   (response) => response,
   (error) => {
     if (error.response?.status === 401) {
-      // Unauthorized - clear token and redirect to login
+      const code = error.response?.data?.code;
+
+      if (code === 'SESSION_TERMINATED') {
+        // Another device has logged in and killed this session.
+        // Dispatch a custom event — App.js listens and shows the dialog.
+        window.dispatchEvent(new CustomEvent('session-terminated'));
+        return Promise.reject(error);
+      }
+
+      // Regular 401 (expired token, etc.) — silently clear and redirect
       localStorage.removeItem('token');
       localStorage.removeItem('user');
+      localStorage.removeItem('sessionId');
       window.location.href = '/login';
     }
     return Promise.reject(error);

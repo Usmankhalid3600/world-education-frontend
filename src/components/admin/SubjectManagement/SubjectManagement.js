@@ -3,6 +3,7 @@ import { getClasses } from '../../../services/adminService';
 import { getSubjectsByClass } from '../../../services/educationService';
 import { createSubject, updateSubject, deleteSubject } from '../../../services/adminService';
 import Button from '../../common/Button/Button';
+import Loader from '../../common/Loader/Loader';
 import '../ClassManagement/ClassManagement.css';
 
 const SubjectManagement = () => {
@@ -15,7 +16,8 @@ const SubjectManagement = () => {
   const [formData, setFormData] = useState({
     classId: '',
     subjectName: '',
-    isActive: true
+    isActive: true,
+    description: ''
   });
 
   useEffect(() => {
@@ -48,7 +50,7 @@ const SubjectManagement = () => {
     try {
       setLoading(true);
       const data = await getSubjectsByClass(classId);
-      setSubjects(data);
+      setSubjects([...(data.optedSubjects || []), ...(data.unoptedSubjects || [])]);
     } catch (error) {
       console.error('Failed to load subjects:', error);
       setSubjects([]);
@@ -99,7 +101,8 @@ const SubjectManagement = () => {
     setFormData({
       classId: subject.classId,
       subjectName: subject.subjectName,
-      isActive: subject.isActive
+      isActive: subject.isActive,
+      description: subject.description || ''
     });
     setShowModal(true);
   };
@@ -109,7 +112,8 @@ const SubjectManagement = () => {
     setFormData({
       classId: selectedClassId || '',
       subjectName: '',
-      isActive: true
+      isActive: true,
+      description: ''
     });
   };
 
@@ -122,13 +126,14 @@ const SubjectManagement = () => {
     setFormData({
       classId: selectedClassId || '',
       subjectName: '',
-      isActive: true
+      isActive: true,
+      description: ''
     });
     setShowModal(true);
   };
 
   if (loading && classes.length === 0) {
-    return <div className="loading-spinner">Loading...</div>;
+    return <Loader text="Loading subjects…" />;
   }
 
   return (
@@ -252,6 +257,17 @@ const SubjectManagement = () => {
                   onChange={(e) => setFormData({ ...formData, subjectName: e.target.value })}
                   required
                   placeholder="e.g., Mathematics"
+                />
+              </div>
+
+              <div className="form-group">
+                <label>Description</label>
+                <textarea
+                  value={formData.description}
+                  onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+                  placeholder="Optional description for this subject"
+                  rows={3}
+                  style={{ width: '100%', padding: '10px 14px', border: '1px solid #d1d5db', borderRadius: '8px', fontSize: '14px', resize: 'vertical' }}
                 />
               </div>
 

@@ -2,7 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { getClasses } from '../../../services/adminService';
 import { getSubjectsByClass, getTopicsBySubject, getTopicContents } from '../../../services/educationService';
 import Button from '../../common/Button/Button';
+import ContentViewer from '../../education/ContentViewer/ContentViewer';
 import apiClient from '../../../utils/apiClient';
+import API_BASE_URL from '../../../config/api';
 import '../ClassManagement/ClassManagement.css';
 import './ContentManagement.css';
 
@@ -15,11 +17,13 @@ const ContentManagement = () => {
   const [selectedSubjectId, setSelectedSubjectId] = useState('');
   const [selectedTopicId, setSelectedTopicId] = useState('');
   const [loading, setLoading] = useState(false);
+  const [selectedContent, setSelectedContent] = useState(null);
   const [showUploadModal, setShowUploadModal] = useState(false);
   const [uploadData, setUploadData] = useState({
     contentType: 'PDF',
     contentUrl: '',
-    files: []
+    files: [],
+    isFree: false
   });
 
   useEffect(() => {
@@ -59,9 +63,10 @@ const ContentManagement = () => {
   const loadSubjects = async (classId) => {
     try {
       const data = await getSubjectsByClass(classId);
-      setSubjects(data);
-      if (data.length > 0) {
-        setSelectedSubjectId(data[0].subjectId);
+      const flat = [...(data.optedSubjects || []), ...(data.unoptedSubjects || [])];
+      setSubjects(flat);
+      if (flat.length > 0) {
+        setSelectedSubjectId(flat[0].subjectId);
       } else {
         setSelectedSubjectId('');
         setTopics([]);
@@ -75,9 +80,10 @@ const ContentManagement = () => {
   const loadTopics = async (subjectId) => {
     try {
       const data = await getTopicsBySubject(subjectId);
-      setTopics(data);
-      if (data.length > 0) {
-        setSelectedTopicId(data[0].topicId);
+      const flat = [...(data.optedTopics || []), ...(data.unoptedTopics || [])];
+      setTopics(flat);
+      if (flat.length > 0) {
+        setSelectedTopicId(flat[0].topicId);
       } else {
         setSelectedTopicId('');
         setContents([]);
@@ -92,7 +98,7 @@ const ContentManagement = () => {
     try {
       setLoading(true);
       const data = await getTopicContents(topicId);
-      setContents(data);
+      setContents(data.data?.contents || []);
     } catch (error) {
       console.error('Failed to load contents:', error);
       setContents([]);
@@ -121,17 +127,18 @@ const ContentManagement = () => {
 
       const formData = new FormData();
       formData.append('contentType', uploadData.contentType);
-      
+      formData.append('isFree', uploadData.isFree ? 'true' : 'false');
+
       if (uploadData.contentUrl) {
         formData.append('contentUrl', uploadData.contentUrl);
       }
-      
+
       uploadData.files.forEach(file => {
-        formData.append('files', file);
+        formData.append('file', file);
       });
 
       const response = await apiClient.post(
-        `/api/topics/${selectedTopicId}/contents/upload`,
+        `${API_BASE_URL}/api/topics/${selectedTopicId}/contents/upload`,
         formData,
         {
           headers: {
@@ -143,7 +150,7 @@ const ContentManagement = () => {
       if (response.data.success) {
         alert('Content uploaded successfully');
         setShowUploadModal(false);
-        setUploadData({ contentType: 'PDF', contentUrl: '', files: [] });
+        setUploadData({ contentType: 'PDF', contentUrl: '', files: [], isFree: false });
         loadContents(selectedTopicId);
       }
     } catch (error) {
@@ -160,7 +167,7 @@ const ContentManagement = () => {
     }
 
     try {
-      await apiClient.delete(`/api/topics/${selectedTopicId}/contents/${contentId}`);
+      await apiClient.delete(`${API_BASE_URL}/api/topics/contents/${contentId}`);
       loadContents(selectedTopicId);
     } catch (error) {
       console.error('Failed to delete content:', error);
@@ -222,6 +229,7 @@ const ContentManagement = () => {
             <tr>
               <th>Content ID</th>
               <th>Type</th>
+              <th>Access</th>
               <th>URL</th>
               <th>File Name</th>
               <th>Upload Date</th>
@@ -231,7 +239,7 @@ const ContentManagement = () => {
           <tbody>
             {contents.length === 0 ? (
               <tr>
-                <td colSpan="6" className="no-data">
+                <td colSpan="7" className="no-data">
                   {selectedTopicId ? 'No content found for this topic' : 'Please select a topic'}
                 </td>
               </tr>
@@ -240,22 +248,35 @@ const ContentManagement = () => {
                 <tr key={content.contentId}>
                   <td>{content.contentId}</td>
                   <td>
-                    <span className="content-type-badge">{content.contentType}</span>
+                    <span className="content-type-badge">{content.fileType}</span>
+                  </td>
+                  <td>
+                    {content.isFree ? (
+                      <span className="access-badge access-badge-free">Free</span>
+                    ) : (
+                      <span className="access-badge access-badge-paid">Paid</span>
+                    )}
                   </td>
                   <td className="url-cell">
-                    {content.contentUrl ? (
-                      <a href={content.contentUrl} target="_blank" rel="noopener noreferrer">
-                        {content.contentUrl.substring(0, 50)}...
+                    {content.filePathUrl ? (
+                      <a href={content.filePathUrl} target="_blank" rel="noopener noreferrer">
+                        {content.filePathUrl.substring(0, 50)}...
                       </a>
                     ) : (
                       'N/A'
                     )}
                   </td>
-                  <td>{content.originalFileName || 'N/A'}</td>
+                  <td>{content.fileName || 'N/A'}</td>
                   <td>{content.uploadedAt ? new Date(content.uploadedAt).toLocaleDateString() : 'N/A'}</td>
-                  <td>
-                    <button 
-                      className="btn-delete" 
+                  <td style={{ display: 'flex', gap: '8px' }}>
+                    <button
+                      className="btn-view"
+                      onClick={() => setSelectedContent(content)}
+                    >
+                      View
+                    </button>
+                    <button
+                      className="btn-delete"
                       onClick={() => handleDelete(content.contentId)}
                     >
                       Delete
@@ -267,6 +288,13 @@ const ContentManagement = () => {
           </tbody>
         </table>
       </div>
+
+      {selectedContent && (
+        <ContentViewer
+          content={selectedContent}
+          onClose={() => setSelectedContent(null)}
+        />
+      )}
 
       {showUploadModal && (
         <div className="modal-overlay" onClick={() => setShowUploadModal(false)}>
@@ -338,10 +366,31 @@ const ContentManagement = () => {
                 </div>
               )}
 
+              <div className="form-group">
+                <label style={{ display: 'flex', alignItems: 'center', gap: '10px', cursor: 'pointer', userSelect: 'none' }}>
+                  <div
+                    className={`free-toggle ${uploadData.isFree ? 'free-toggle-on' : ''}`}
+                    onClick={() => setUploadData({ ...uploadData, isFree: !uploadData.isFree })}
+                    role="checkbox"
+                    aria-checked={uploadData.isFree}
+                    tabIndex={0}
+                    onKeyDown={(e) => e.key === ' ' && setUploadData({ ...uploadData, isFree: !uploadData.isFree })}
+                  >
+                    <div className="free-toggle-thumb" />
+                  </div>
+                  <span>
+                    <strong>Free Content</strong>
+                    <span style={{ color: '#6b7280', fontWeight: 400, marginLeft: 6 }}>
+                      {uploadData.isFree ? '— visible to all users without subscription' : '— requires subscription to view'}
+                    </span>
+                  </span>
+                </label>
+              </div>
+
               <div className="form-actions">
-                <button 
-                  type="button" 
-                  className="btn-secondary" 
+                <button
+                  type="button"
+                  className="btn-secondary"
                   onClick={() => setShowUploadModal(false)}
                 >
                   Cancel

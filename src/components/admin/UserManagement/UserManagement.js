@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { getAllUsers, getUserDetails } from '../../../services/adminService';
+import Loader from '../../common/Loader/Loader';
 import '../ClassManagement/ClassManagement.css';
 import './UserManagement.css';
 
@@ -56,7 +57,7 @@ const UserManagement = () => {
   };
 
   if (loading) {
-    return <div className="loading-spinner">Loading users...</div>;
+    return <Loader text="Loading users…" />;
   }
 
   return (

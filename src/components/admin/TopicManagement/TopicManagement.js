@@ -18,7 +18,8 @@ const TopicManagement = () => {
     subjectId: '',
     topicName: '',
     publishDate: '',
-    isActive: true
+    isActive: true,
+    description: ''
   });
 
   useEffect(() => {
@@ -55,9 +56,10 @@ const TopicManagement = () => {
   const loadSubjects = async (classId) => {
     try {
       const data = await getSubjectsByClass(classId);
-      setSubjects(data);
-      if (data.length > 0) {
-        setSelectedSubjectId(data[0].subjectId);
+      const flat = [...(data.optedSubjects || []), ...(data.unoptedSubjects || [])];
+      setSubjects(flat);
+      if (flat.length > 0) {
+        setSelectedSubjectId(flat[0].subjectId);
       } else {
         setSelectedSubjectId('');
         setTopics([]);
@@ -72,7 +74,7 @@ const TopicManagement = () => {
     try {
       setLoading(true);
       const data = await getTopicsBySubject(subjectId);
-      setTopics(data);
+      setTopics([...(data.optedTopics || []), ...(data.unoptedTopics || [])]);
     } catch (error) {
       console.error('Failed to load topics:', error);
       setTopics([]);
@@ -129,7 +131,8 @@ const TopicManagement = () => {
       subjectId: topic.subjectId,
       topicName: topic.topicName,
       publishDate: topic.publishDate ? new Date(topic.publishDate).toISOString().split('T')[0] : '',
-      isActive: topic.isActive
+      isActive: topic.isActive,
+      description: topic.description || ''
     });
     setShowModal(true);
   };
@@ -140,7 +143,8 @@ const TopicManagement = () => {
       subjectId: selectedSubjectId || '',
       topicName: '',
       publishDate: '',
-      isActive: true
+      isActive: true,
+      description: ''
     });
   };
 
@@ -154,7 +158,8 @@ const TopicManagement = () => {
       subjectId: selectedSubjectId || '',
       topicName: '',
       publishDate: '',
-      isActive: true
+      isActive: true,
+      description: ''
     });
     setShowModal(true);
   };
@@ -315,6 +320,17 @@ const TopicManagement = () => {
                   type="date"
                   value={formData.publishDate}
                   onChange={(e) => setFormData({ ...formData, publishDate: e.target.value })}
+                />
+              </div>
+
+              <div className="form-group">
+                <label>Description</label>
+                <textarea
+                  value={formData.description}
+                  onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+                  placeholder="Optional description for this topic"
+                  rows={3}
+                  style={{ width: '100%', padding: '10px 14px', border: '1px solid #d1d5db', borderRadius: '8px', fontSize: '14px', resize: 'vertical' }}
                 />
               </div>
 

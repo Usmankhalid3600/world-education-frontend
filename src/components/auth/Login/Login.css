@@ -50,6 +50,15 @@
   margin-bottom: 1.5rem;
 }
 
+.forgot-password-row {
+  text-align: right;
+  margin-bottom: 1rem;
+}
+
+.forgot-password-link {
+  font-size: 0.85rem;
+}
+
 .login-footer {
   margin-top: 1.75rem;
   text-align: center;

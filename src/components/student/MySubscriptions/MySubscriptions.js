@@ -50,6 +50,7 @@ const MySubscriptions = () => {
       case 'ACTIVE': return '#4CAF50';
       case 'IN_GRACE_PERIOD': return '#FF9800';
       case 'EXPIRED': return '#f44336';
+      case 'INACTIVE': return '#ed8936';
       default: return '#999';
     }
   };
@@ -57,6 +58,7 @@ const MySubscriptions = () => {
   const getStatusIcon = (status) => {
     switch (status) {
       case 'ACTIVE': return '✓';
+      case 'INACTIVE': return '⊘';
       case 'IN_GRACE_PERIOD': return '⏰';
       case 'EXPIRED': return '✗';
       default: return '•';

@@ -2,6 +2,7 @@ import React from 'react';
 import './TopicCard.css';
 
 const TopicCard = ({ topic, onClick, isOpted }) => {
+  const subscriptionInactive = topic.subscriptionInactive;
   const formatDate = (dateString) => {
     if (!dateString) return 'N/A';
     const date = new Date(dateString);
@@ -21,22 +22,29 @@ const TopicCard = ({ topic, onClick, isOpted }) => {
   };
 
   return (
-    <div 
-      className={`topic-card ${isOpted ? 'opted' : 'unopted'}`}
-      onClick={onClick}
+    <div
+      className={`topic-card ${isOpted ? 'opted' : subscriptionInactive ? 'subscription-inactive' : 'unopted'}`}
+      onClick={subscriptionInactive ? undefined : onClick}
+      style={subscriptionInactive ? { cursor: 'default' } : undefined}
     >
       <div className="topic-card-header">
         <h4>{topic.topicName}</h4>
         {isOpted && (
           <span className="badge opted-badge">✓ Subscribed</span>
         )}
-        {!isOpted && topic.subscriptionPrice && (
+        {subscriptionInactive && (
+          <span className="badge inactive-badge">Subscription Inactive</span>
+        )}
+        {!isOpted && !subscriptionInactive && topic.subscriptionPrice && (
           <span className="badge price-badge">
             {formatPrice(topic.subscriptionPrice, topic.currency)}
           </span>
         )}
       </div>
       <div className="topic-card-body">
+        {topic.description && (
+          <p className="topic-description">{topic.description}</p>
+        )}
         <p className="publish-date">
           <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
             <path d="M8 0a8 8 0 1 1 0 16A8 8 0 0 1 8 0zM7 4v5h4V8H8V4z"/>
@@ -65,7 +73,7 @@ const TopicCard = ({ topic, onClick, isOpted }) => {
         )}
       </div>
       <div className="topic-card-footer">
-        <button className="view-content-btn">
+        <button className="view-content-btn" disabled={subscriptionInactive}>
           {isOpted ? (
             <>
               <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
@@ -73,6 +81,13 @@ const TopicCard = ({ topic, onClick, isOpted }) => {
                 <path d="M10.97 4.97a.235.235 0 0 0-.02.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-1.071-1.05z"/>
               </svg>
               View Content
+            </>
+          ) : subscriptionInactive ? (
+            <>
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+                <path d="M8 1a2 2 0 0 1 2 2v4H6V3a2 2 0 0 1 2-2zm3 6V3a3 3 0 0 0-6 0v4a2 2 0 0 0-2 2v5a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2z"/>
+              </svg>
+              Access Revoked by Admin
             </>
           ) : (
             <>

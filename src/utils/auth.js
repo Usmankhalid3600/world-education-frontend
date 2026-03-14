@@ -28,8 +28,20 @@ export const isAuthenticated = () => {
   return !!getAuthToken();
 };
 
+export const setSessionId = (sessionId) => {
+  localStorage.setItem('sessionId', sessionId);
+};
+
+export const getSessionId = () => {
+  return localStorage.getItem('sessionId');
+};
+
+export const removeSessionId = () => {
+  localStorage.removeItem('sessionId');
+};
+
 export const logout = () => {
   removeAuthToken();
   removeUser();
-  window.location.href = '/login';
+  removeSessionId();
 };

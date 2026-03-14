@@ -19,7 +19,7 @@ export const getAllClasses = async () => {
 export const getSubjectsByClass = async (classId) => {
   try {
     const response = await apiClient.get(API_ENDPOINTS.SUBJECTS(classId));
-    return response.data;
+    return response.data.data;
   } catch (error) {
     throw error.response?.data || error.message;
   }
@@ -31,6 +31,35 @@ export const getSubjectsByClass = async (classId) => {
 export const getTopicsBySubject = async (subjectId) => {
   try {
     const response = await apiClient.get(API_ENDPOINTS.TOPICS(subjectId));
+    return response.data.data;
+  } catch (error) {
+    throw error.response?.data || error.message;
+  }
+};
+
+/**
+ * Get contents for a specific topic.
+ * Returns the response body even on 403 so the caller can check hasAccess.
+ */
+export const getTopicContents = async (topicId) => {
+  try {
+    const response = await apiClient.get(API_ENDPOINTS.TOPIC_CONTENTS(topicId));
+    return response.data;
+  } catch (error) {
+    if (error.response?.status === 403) {
+      return error.response.data;
+    }
+    throw error.response?.data || error.message;
+  }
+};
+
+/**
+ * Get subscription plan options grouped by level (topic / subject / class)
+ * for a locked topic — used to display the subscribe screen.
+ */
+export const getTopicSubscriptionOptions = async (topicId) => {
+  try {
+    const response = await apiClient.get(API_ENDPOINTS.TOPIC_SUBSCRIPTION_OPTIONS(topicId));
     return response.data;
   } catch (error) {
     throw error.response?.data || error.message;
@@ -38,11 +67,23 @@ export const getTopicsBySubject = async (subjectId) => {
 };
 
 /**
- * Get contents for a specific topic
+ * Subscribe the current student to a subject (grants access to all topics in it)
  */
-export const getTopicContents = async (topicId) => {
+export const subscribeToSubject = async (subjectId) => {
   try {
-    const response = await apiClient.get(API_ENDPOINTS.TOPIC_CONTENTS(topicId));
+    const response = await apiClient.post(API_ENDPOINTS.SUBSCRIBE_SUBJECT(subjectId));
+    return response.data;
+  } catch (error) {
+    throw error.response?.data || error.message;
+  }
+};
+
+/**
+ * Subscribe the current student to a specific topic
+ */
+export const subscribeToTopic = async (topicId) => {
+  try {
+    const response = await apiClient.post(API_ENDPOINTS.SUBSCRIBE_TOPIC(topicId));
     return response.data;
   } catch (error) {
     throw error.response?.data || error.message;
